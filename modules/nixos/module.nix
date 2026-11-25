@@ -12,6 +12,8 @@ in {
   ];
 
   config = mkIf cfg.enable {
+    xdg.directories.enable = true;
+
     environment = let
       enabledPrograms = lib.filterAttrs (_: v: v.enable) cfg.programs;
 
@@ -26,13 +28,7 @@ in {
       # Set up global variables from collected variables
       variables = cfg.env.globalVars;
 
-      sessionVariables = {
-        XDG_CACHE_HOME = "$HOME/.cache";
-        XDG_CONFIG_HOME = "$HOME/.config";
-        XDG_DATA_HOME = "$HOME/.local/share";
-        XDG_STATE_HOME = "$HOME/.local/state";
-        XDG_BIN_HOME = "$HOME/.local/bin";
-      };
+      sessionVariables.XDG_BIN_HOME = "$HOME/.local/bin";
 
       # Link files associated with enabled programs
       etc = allFilesByTarget;
